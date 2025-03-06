@@ -51,7 +51,6 @@ const MOCK_DATA = {
   THEORY: [],
   REPORTING: [],
   EVENTTYPETAGS: [],
-  INSTANCES: [],
 };
 
 // Define the expected headers for each table in the database schema
@@ -111,17 +110,6 @@ export const getTableHeaders = (tableName) => {
         'report_id',
         'tag_id'
       ];
-    case 'INSTANCES':
-      return [
-        'instance_id',
-        'title',
-        'description',
-        'instance_type',
-        'date_reported',
-        'location',
-        'source_link',
-        'entity_id'
-      ];
     default:
       return [];
   }
@@ -158,18 +146,6 @@ const mapDbFieldsToUiFields = (tableName, dbData) => {
       WHO: dbData.entity_id || '',
       REGION: dbData.location || '',
       URL: dbData.source_link || ''
-    };
-  } else if (tableName.toUpperCase() === 'INSTANCES') {
-    return {
-      id: dbData.instance_id || '',
-      HEADLINE: dbData.title || '',
-      POST_CONTENT: dbData.description || '',
-      INSTANCE_TYPE: dbData.instance_type || '',
-      DATE_REPORTED: dbData.date_reported || '',
-      LOCATION: dbData.location || '',
-      URL: dbData.source_link || '',
-      WHO: dbData.entity_id || '',
-      CATEGORY: 'instances'
     };
   } else if (tableName.toUpperCase() === 'ENTITIES') {
     return {
@@ -240,21 +216,6 @@ export const addRowToEntitiesTable = async (data) => {
   });
   if (!response.ok) {
     throw new Error('Failed to add row to ENTITIES table');
-  }
-};
-
-// Add a function to save data to the instances table
-export const addRowToInstancesTable = async (data) => {
-  const response = await sheets.spreadsheets.values.append({
-    spreadsheetId: process.env.REACT_APP_GOOGLE_SPREADSHEET_ID,
-    range: 'INSTANCES',
-    valueInputOption: 'RAW',
-    resource: {
-      values: [Object.values(data)]
-    },
-  });
-  if (!response.ok) {
-    throw new Error('Failed to add row to instances table');
   }
 };
 

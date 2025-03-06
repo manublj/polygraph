@@ -2,18 +2,10 @@
 
 ## Table of Contents
 - [Overview](#overview)
-  - [Core Purpose](#core-purpose)
-  - [Key Components](#key-components)
-  - [Technical Architecture](#technical-architecture)
 - [Table of Contents](#table-of-contents)
 - [Project Structure Analysis](#project-structure-analysis)
-  - [Core Components](#core-components)
-  - [Data Flow](#data-flow)
 - [File Hierarchy](#file-hierarchy)
 - [Development Environment](#development-environment)
-  - [Prerequisites](#prerequisites)
-  - [VS Code Extensions](#vs-code-extensions)
-  - [Environment Setup](#environment-setup)
 - [Setup](#setup)
 - [Installation Instructions](#installation-instructions)
 - [Usage Instructions](#usage-instructions)
@@ -22,11 +14,6 @@
 - [API Implementation](#api-implementation)
 - [API Reference](#api-reference)
 - [Features](#features)
-- [Key Features Implementation](#key-features-implementation)
-  - [PWA Functionality](#pwa-functionality)
-  - [Dynamic Forms](#dynamic-forms)
-  - [Data Organization](#data-organization)
-  - [Content Categories](#content-categories)
 - [Table Structure and Alignment](#table-structure-and-alignment)
 - [Data Schema](#data-schema)
 - [Code Formatting Guidelines](#code-formatting-guidelines)
@@ -41,7 +28,7 @@
 
 Wiki Ver9 is a Progressive Web Application (PWA) designed to serve as an interactive, structured wiki for documenting, categorizing, and exploring news and political content. The application is built with React for a modern user experience and leverages Google Sheets as a lightweight backend for real-time data synchronization.
 
-The application is composed of three main components:
+The application is composed of four main components:
 
 1. **Homepage (Theory Table):** 
 Acts as a "read later" section where users can collect and organize theoretical items related to political and social entities. 
@@ -52,6 +39,9 @@ It provides a structured way to track and analyze news events and their implicat
 3. **Cards Page (Entities Table):** 
 Offers three distinct views, each dedicated to a specific entity type (e.g., people, political parties, movements).
 This feature displays cards for each entity, functioning similarly to a "pokedex," allowing users to explore and learn about different entities in a visually engaging manner.
+4. **Instances Page:** 
+Lists visible markers and instances of discrimination, exploitation, sexual harassment, abuse, domestic violence, state oppression, and other societal issues. 
+This section aims to raise awareness and provide a comprehensive overview of such instances, facilitating better understanding and advocacy.
 
 Overall, Wiki Ver9 aims to create a comprehensive platform for users to interact with and analyze political and news content, offering both depth and breadth in its exploration of theoretical and real-world events.
 
@@ -65,6 +55,7 @@ Overall, Wiki Ver9 aims to create a comprehensive platform for users to interact
 - **Theory Table (Homepage)**: For theoretical content and framework storage
 - **Reporting Table**: For news events with timeline visualization
 - **Entities Table (Cards Page)**: For profiling political actors/entities
+- **Instances Table**: For documenting specific cases of societal issues
 
 ### Technical Architecture:
 - **Frontend**: React-based PWA
@@ -72,39 +63,13 @@ Overall, Wiki Ver9 aims to create a comprehensive platform for users to interact
 - **Dynamic Forms** for data entry
 - **Real-time synchronization**
 
-## Key Features Implementation
-1. **PWA Functionality**
-   - `serviceWorkerRegistration.js`: Handles offline capabilities
-   - `manifest.json`: PWA configuration
-
-2. **Dynamic Forms**
-   - Form components adapt based on content type
-   - Utilize NotionMultiSelect for complex data entry
-
-3. **Data Organization**
-   - Entity-based architecture
-   - Political spectrum categorization
-   - Timeline visualization support
-
-4. **Content Categories**
-   - Theory: Political and social frameworks
-   - Reporting: News events with timeline
-   - Entities: Political actors/organizations
-
-This structure creates a comprehensive system for:
-- Political content aggregation
-- Event timeline tracking
-- Entity relationship mapping
-
-The application effectively combines React frontend components with Google Sheets as a backend database, creating a lightweight but powerful content management system.
-
 ## Project Structure Analysis
 
 ### Core Components
 
 #### 1. API Layer (`/src/api`)
 - `googleSheetsApi.js`: Handles all Google Sheets interactions
-  - Manages 3 primary tables: ENTITIES, THEORY, REPORTING
+  - Manages 4 primary tables: ENTITIES, THEORY, REPORTING, INSTANCES
   - Provides CRUD operations through methods like `getTableData` and `addRowToTable`
 
 #### 2. Components (`/src/components`)
@@ -124,6 +89,7 @@ The application effectively combines React frontend components with Google Sheet
 forms/
   ├── EntitiesForm.js    // Manages entity profiles
   ├── EntryForm.js       // Theory content entry
+  ├── InstancesForm.js   // Societal issues documentation
   └── ReportingForm.js   // News events entry
 ```
 
@@ -132,7 +98,8 @@ forms/
 pages/
   ├── HomePage.js        // Theory table view
   ├── CardsPage.js      // Entity profiles in card format
-  └── ReportingPage.js  // News events timeline
+  ├── ReportingPage.js  // News events timeline
+  └── InstancesPage.js  // Societal issues tracker
 ```
 
 ### Data Flow
@@ -177,12 +144,14 @@ C:\
                      │   └── forms\
                      │       ├── EntitiesForm.js
                      │       ├── EntryForm.js
+                     │       ├── InstancesForm.js
                      │       └── ReportingForm.js
                      ├── index.css
                      ├── index.js
                      ├── pages\
-                     │   ├── HomePage.js
                      │   ├── CardsPage.js
+                     │   ├── HomePage.js
+                     │   ├── InstancesPage.js
                      │   └── ReportingPage.js
                      └── serviceWorkerRegistration.js
 
@@ -250,10 +219,11 @@ REACT_APP_GOOGLE_API_KEY=your_api_key
 ```
 
 ### Google Sheets Setup
-1. Create three sheets named:
+1. Create four sheets named:
    - ENTITIES
    - THEORY
    - REPORTING
+   - INSTANCES
 2. Share sheets with service account email
 3. Configure sheet permissions
 
@@ -277,11 +247,12 @@ const data = await getTableData();
 - **Article Feed:** Displays a curated feed of political and general news articles categorized as THEORY or REPORTING.
 - **Reading Mode:** Offers an enhanced reading interface that parses articles using the Readability API, making text easier to digest.
 - **Highlighting & Floating Icons:** Enables users to highlight sections of text; these highlights are then visually represented as floating icons both in the article view and on the homepage feed.
-- **Dynamic Content Addition:** A floating 'Add' button lets users input new data. The input form adapts based on the content category selected (THEORY, REPORTING).
+- **Dynamic Content Addition:** A floating 'Add' button lets users input new data. The input form adapts based on the content category selected (THEORY, REPORTING, or INSTANCES).
 - **Google Sheets Integration:** All data is stored and updated dynamically in Google Sheets, ensuring real-time synchronization across the application.
 - **Entity-based Organization:** Articles, reports, and instances are categorized by entities (e.g., people, political parties, movements).
 - **Offline Functionality:** Utilizes Progressive Web App capabilities for offline access.
 - **Complete Table Views:** View complete database tables for all Google Sheets data.
+- **Reported Instances:** Track and categorize reported instances of discrimination, sexual abuse, and exploitation.
 
 ## Table Structure and Alignment
 
@@ -373,6 +344,31 @@ The `ReportingForm` dynamically adapts based on the `Source Type` and includes f
 **Google Sheets API**: `addRowToReportingTable`
 - `addRowToReportingTable`: Handles adding rows to the `REPORTING` sheet.
 
+### 4. INSTANCES Table
+**Schema**
+- `INSTANCE_TYPE`: Type of instance (discrimination, sexual_abuse, exploitation, state_violence, state_sponsored_terrorism, religious_stupidity).
+- `HEADLINE`: Headline of the instance.
+- `POST_CONTENT`: Detailed description of the instance.
+- `LOCATION`: Location of the instance.
+- `DATE_REPORTED`: Date the instance was reported.
+- `URL`: URL of the source.
+- `SPECTRUM`: Political spectrum (LEFT, CENTRE, RIGHT).
+
+**Dynamic Form Structure**
+The `InstancesForm` captures instances of societal issues, dynamically structured to ensure comprehensive data entry:
+- **Instance Type** (dropdown): Categorizes the type of instance.
+  - Options: Discrimination, Sexual Abuse, Exploitation, State Violence, State Sponsored Terrorism, Religious Stupidity
+- **Headline** (text input): Headline summarizing the instance.
+- **Post Content** (text area): Detailed description of the instance.
+- **Location** (multi-select): Allows selection of multiple locations using NotionMultiSelect.
+- **Date Reported** (date input): Date when the instance was reported.
+- **URL** (URL input): Source link for the instance.
+- **Spectrum** (dropdown): Political spectrum categorization.
+  - Options: Left, Centre, Right
+
+**Google Sheets API**: 
+- `addRowToInstancesTable`: Handles adding rows to the `INSTANCES` sheet.
+
 ## Code Formatting Guidelines
 
 ### Code Blocks
@@ -438,6 +434,35 @@ npm run dev
 ### Building for Production
 ```bash
 npm run build
+```
+
+## Data Schema
+
+### Sheet Structures
+Detailed field descriptions and data types for each sheet
+
+## Google Sheets Integration
+
+### Service Account Setup
+1. Place service account credentials:
+```bash
+# Create credentials file
+copy your-downloaded-credentials.json src/service-account.json
+```
+
+2. Configure environment variables:
+```env
+REACT_APP_GOOGLE_SPREADSHEET_ID=your_spreadsheet_id
+REACT_APP_GOOGLE_API_KEY=your_api_key
+```
+
+### API Implementation
+Example API call:
+```javascript
+import { getTableData } from '../api/googleSheetsApi';
+
+// Fetch data
+const data = await getTableData();
 ```
 
 ## Contributing

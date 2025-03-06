@@ -5,7 +5,6 @@ import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import CardsPage from './pages/CardsPage';
 import ReportingPage from './pages/ReportingPage';
-import InstancesPage from './pages/InstancesPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -23,7 +22,6 @@ function App() {
             <Route path="/" element={<HomePage />} /> 
             <Route path="/reporting" element={<ReportingPage />} />
             <Route path="/wiki" element={<CardsPage />} /> 
-            <Route path="/instances" element={<InstancesPage />} />
           </Routes>
         </Container>
       </div>
